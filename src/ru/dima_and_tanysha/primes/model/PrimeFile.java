@@ -1,0 +1,40 @@
+package ru.dima_and_tanysha.primes.model;
+
+/**
+ * Created by Pussy_penetrator on 13.03.2017.
+ */
+public class PrimeFile {
+
+    private final String mPath;
+    private final String mFileName;
+    private final int    mPrimeCount;
+    private final int    mTotalCount;
+
+    public PrimeFile(String fileName, int primeCount, int totalCount) {
+        mFileName = fileName;
+        mPath = fileName;
+        mPrimeCount = primeCount;
+        mTotalCount = totalCount;
+    }
+
+    public String getPath() {
+        return mPath;
+    }
+
+    public String getFileName() {
+        return mFileName;
+    }
+
+    public int getPrimeCount() {
+        return mPrimeCount;
+    }
+
+    public int getTotalCount() {
+        return mTotalCount;
+    }
+
+    @Override
+    public String toString() {
+        return mFileName;
+    }
+}
