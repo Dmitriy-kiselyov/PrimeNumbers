@@ -1,17 +1,23 @@
 package ru.dima_and_tanysha.primes.model;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelFormat;
-import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class PrimesImage extends Canvas {
 
     private static final int IMAGE_WIDTH  = 1000;
     private static final int IMAGE_HEIGHT = 1000;
+
+    private WritableImage mWritableImage;
 
     private int[][] mPrimeCount;
     private byte mImageData[] = new byte[IMAGE_WIDTH * IMAGE_HEIGHT * 3];
@@ -35,6 +41,7 @@ public class PrimesImage extends Canvas {
 
     public void setModel(Model model) {
         mModel = model;
+        mWritableImage = new WritableImage(IMAGE_WIDTH, IMAGE_HEIGHT);
         clearCanvas();
     }
 
@@ -62,18 +69,22 @@ public class PrimesImage extends Canvas {
         int index = 0;
         for (int i = 0; i < IMAGE_WIDTH; i++) {
             for (int j = 0; j < IMAGE_HEIGHT; j++) {
-                mImageData[index++] = (byte) (255 - mPrimeCount[i][j] * norm);
-                mImageData[index++] = (byte) (255 - mPrimeCount[i][j] * norm);
-                mImageData[index++] = (byte) (255 - mPrimeCount[i][j] * norm);
+                int color = (int) (255 - mPrimeCount[i][j] * norm);
+                mImageData[index++] = (byte) color;
+                mImageData[index++] = (byte) color;
+                mImageData[index++] = (byte) color;
             }
         }
 
         //draw
         GraphicsContext context = this.getGraphicsContext2D();
-        PixelWriter pixelWriter = context.getPixelWriter();
         PixelFormat<ByteBuffer> pixelFormat = PixelFormat.getByteRgbInstance();
-        pixelWriter.setPixels(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-                              pixelFormat, mImageData, 0, IMAGE_WIDTH * 3);
+        mWritableImage.getPixelWriter().setPixels(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
+                                                  pixelFormat, mImageData, 0, IMAGE_WIDTH * 3);
+
+        double size = Math.min(getWidth(), getHeight());
+        context.drawImage(mWritableImage, 0, 0, size, size);
+        saveImage("C:\\Users\\dmitr\\Desktop\\img.png");
     }
 
     private int max(int[][] m) {
@@ -114,6 +125,20 @@ public class PrimesImage extends Canvas {
         }
 
         return m;
+    }
+
+    public boolean saveImage(String path) {
+        // Write snapshot to file system as a .png image
+        File outFile = new File(path);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(mWritableImage, null),
+                          "png", outFile);
+            return true;
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 
 }
