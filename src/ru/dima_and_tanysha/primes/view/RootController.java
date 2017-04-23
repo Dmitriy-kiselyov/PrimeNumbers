@@ -3,14 +3,17 @@ package ru.dima_and_tanysha.primes.view;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import ru.dima_and_tanysha.primes.MainApp;
 import ru.dima_and_tanysha.primes.model.Model;
 import ru.dima_and_tanysha.primes.model.PrimeFile;
-import ru.dima_and_tanysha.primes.model.PrimesCanvas;
+import ru.dima_and_tanysha.primes.model.PrimesImage;
 
 /**
  * Created by Pussy_penetrator on 12.03.2017.
@@ -18,7 +21,7 @@ import ru.dima_and_tanysha.primes.model.PrimesCanvas;
 public class RootController {
 
     @FXML
-    PrimesCanvas mCanvas;
+    PrimesImage mCanvas;
 
     @FXML
     Pane mCanvasPane;
@@ -97,7 +100,5 @@ public class RootController {
         if (event.getCode() == KeyCode.ENTER)
             handleApply();
     }
-
-
 
 }

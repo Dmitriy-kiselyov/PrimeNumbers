@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import ru.dima_and_tanysha.primes.model.PrimesCanvas?>
+<?import ru.dima_and_tanysha.primes.model.PrimesImage?>
 
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" onKeyPressed="#handleKeyPress" styleClass="parent" stylesheets="@css/root_style.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.dima_and_tanysha.primes.view.RootController">
   <columnConstraints>
@@ -24,7 +24,7 @@
    <children>
       <Pane fx:id="mCanvasPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
-            <PrimesCanvas fx:id="mCanvas" height="100.0" width="100.0" />
+            <PrimesImage fx:id="mCanvas" height="100.0" width="100.0" />
          </children>
       </Pane>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
