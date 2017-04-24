@@ -82,9 +82,7 @@ public class PrimesImage extends Canvas {
         mWritableImage.getPixelWriter().setPixels(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
                                                   pixelFormat, mImageData, 0, IMAGE_WIDTH * 3);
 
-        double size = Math.min(getWidth(), getHeight());
-        context.drawImage(mWritableImage, 0, 0, size, size);
-        saveImage("C:\\Users\\dmitr\\Desktop\\img.png");
+        context.drawImage(mWritableImage, 0, 0);
     }
 
     private int max(int[][] m) {

@@ -3,10 +3,7 @@ package ru.dima_and_tanysha.primes.view;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -30,7 +27,22 @@ public class RootController {
     ComboBox<PrimeFile> mFileComboBox;
 
     @FXML
-    CheckBox mOnlyPrimeCheckBox;
+    TextField mWidthTextField;
+
+    @FXML
+    TextField mHeightTextField;
+
+    @FXML
+    Slider mFilterSlider;
+
+    @FXML
+    Label mFilterLabel;
+
+    @FXML
+    TextField mPathTextField;
+
+    @FXML
+    Button mSaveButton;
 
     @FXML
     Label mTimeLabel;
@@ -68,8 +80,6 @@ public class RootController {
         });
 
         mApplyButton.disableProperty().bind(mCanApply.not());
-
-        mOnlyPrimeCheckBox.selectedProperty().bindBidirectional(mModel.onlyPrimeProperty());
     }
 
     private void disableOrEnableApply() {
