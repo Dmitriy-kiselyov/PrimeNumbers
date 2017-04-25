@@ -67,7 +67,7 @@ public class RootController {
         mFileComboBox.setItems(mMainApp.getPrimeFiles());
         mCanvas.setModel(mModel);
 
-        mFileComboBox.getSelectionModel().select(0);
+        mFileComboBox.getSelectionModel().select(mModel.getPrimeFile());
         mTimeLabel.setVisible(false);
 
         setupListeners();
@@ -80,6 +80,14 @@ public class RootController {
         });
 
         mApplyButton.disableProperty().bind(mCanApply.not());
+
+        mFilterSlider.setMin(mModel.MIN_FILTER);
+        mFilterSlider.setMax(mModel.MAX_FILTER);
+        mFilterSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            mModel.setFilter(newValue.intValue());
+            mFilterLabel.setText(String.valueOf(newValue.intValue()));
+        });
+        mFilterSlider.setValue(mModel.getFilter());
     }
 
     private void disableOrEnableApply() {
@@ -95,7 +103,7 @@ public class RootController {
             mTimeLabel.setVisible(false);
             long startTime = System.nanoTime();
 
-            mCanvas.redraw();
+            mCanvas.updateAndRedraw();
 
             long time = (System.nanoTime() - startTime) / 1_000_000;
             long sec = time / 1_000;

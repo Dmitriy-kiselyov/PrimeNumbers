@@ -18,31 +18,32 @@ public class PrimesImage extends Canvas {
     private static final int IMAGE_HEIGHT = 1000;
 
     private WritableImage mWritableImage;
-
-    private int[][] mPrimeCount;
-    private byte mImageData[] = new byte[IMAGE_WIDTH * IMAGE_HEIGHT * 3];
+    private int[][]       mPrimeCount;
+    private byte[]        mImageData;
+    private double        mRadius;
 
     private Model mModel;
 
     public PrimesImage() {
         super();
-        setupListeners();
+        setupSizeListeners();
     }
 
     public PrimesImage(double width, double height) {
         super(width, height);
-        setupListeners();
+        setupSizeListeners();
     }
 
-    private void setupListeners() {
-        this.widthProperty().addListener((observable, oldValue, newValue) -> clearCanvas());
-        this.heightProperty().addListener((observable, oldValue, newValue) -> clearCanvas());
+    private void setupSizeListeners() {
+        this.widthProperty().addListener((observable, oldValue, newValue) -> onDraw());
+        this.heightProperty().addListener((observable, oldValue, newValue) -> onDraw());
     }
 
     public void setModel(Model model) {
         mModel = model;
-        mWritableImage = new WritableImage(IMAGE_WIDTH, IMAGE_HEIGHT);
         clearCanvas();
+        //Model listeners
+        mModel.filterProperty().addListener((observable, oldValue, newValue) -> onDraw());
     }
 
     private void clearCanvas() {
@@ -51,28 +52,40 @@ public class PrimesImage extends Canvas {
         context.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 
-    public void redraw() {
+    public void updateAndRedraw() {
+        mWritableImage = new WritableImage(IMAGE_WIDTH, IMAGE_HEIGHT);
+        mImageData = new byte[IMAGE_WIDTH * IMAGE_HEIGHT * 3];
+        mRadius = getRadius();
+        mPrimeCount = countPrimes(mRadius);
+
         onDraw();
     }
 
     private void onDraw() {
         clearCanvas();
 
-        mModel.setAutoRadius(Math.min(IMAGE_WIDTH, IMAGE_HEIGHT) / 2 - 5);
-        double radius = mModel.getRadius();
+        if (mImageData == null)
+            return;
 
-        mPrimeCount = countPrimes(radius);
         int max = max(mPrimeCount);
         double norm = 255.0 / max;
 
         //count byte data
         int index = 0;
+        int filter = mModel.getFilter();
         for (int i = 0; i < IMAGE_WIDTH; i++) {
             for (int j = 0; j < IMAGE_HEIGHT; j++) {
                 int color = (int) (255 - mPrimeCount[i][j] * norm);
-                mImageData[index++] = (byte) color;
-                mImageData[index++] = (byte) color;
-                mImageData[index++] = (byte) color;
+
+                if (color > filter) {
+                    mImageData[index++] = (byte) 255;
+                    mImageData[index++] = (byte) 255;
+                    mImageData[index++] = (byte) 255;
+                } else {
+                    mImageData[index++] = (byte) color;
+                    mImageData[index++] = (byte) color;
+                    mImageData[index++] = (byte) color;
+                }
             }
         }
 
@@ -83,6 +96,26 @@ public class PrimesImage extends Canvas {
                                                   pixelFormat, mImageData, 0, IMAGE_WIDTH * 3);
 
         context.drawImage(mWritableImage, 0, 0);
+    }
+
+    private double getRadius() {
+        double outerRadius = Math.min(IMAGE_WIDTH, IMAGE_HEIGHT) / 2 - 5;
+
+        if (mModel.getTotalCount() == 0)
+            return 0;
+        if (mModel.getTotalCount() == 1)
+            return outerRadius;
+
+        long totalCount = mModel.getTotalCount() - 1;
+        long layer = 0;
+        long count = 0;
+        for (long i = 1; count < totalCount; i += 6) {
+            count += i;
+            layer++;
+        }
+
+        count = layer * 2 - 1;
+        return outerRadius / count;
     }
 
     private int max(int[][] m) {

@@ -32,7 +32,7 @@ public class MainApp extends Application {
         mPrimeFiles.add(new PrimeFile("(664 579 primes out of 10 000 000).data", 664_579, 10_000_000));
         mPrimeFiles.add(new PrimeFile("(5 761 455 primes out of 100 000 000).data", 5_761_455, 100_000_000));
 
-        mModel.setPrimeFile(mPrimeFiles.get(0));
+        mModel.setPrimeFile(mPrimeFiles.get(4));
     }
 
     public static void main(String[] args) {

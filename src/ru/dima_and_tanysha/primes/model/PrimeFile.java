@@ -1,8 +1,5 @@
 package ru.dima_and_tanysha.primes.model;
 
-/**
- * Created by Pussy_penetrator on 13.03.2017.
- */
 public class PrimeFile {
 
     private final String mPath;

@@ -1,25 +1,25 @@
 package ru.dima_and_tanysha.primes.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-/**
- * Created by Pussy_penetrator on 12.03.2017.
- */
 public class Model {
 
-    public static final double RADIUS_MINIMUM = 0.00001;
-    public static final double RADIUS_MAXIMUM = 10000;
-
-    private double          mRadius    = 2;
-    private BooleanProperty mOnlyPrime = new SimpleBooleanProperty(true);
+    public final int MIN_FILTER = 100;
+    public final int MAX_FILTER = 255;
 
     private PrimeFile mPrimeFile;
     private int[]     mPrimes;
     private boolean[] mPrimesInBoolean;
+
+    private IntegerProperty mFilter = new SimpleIntegerProperty(MAX_FILTER);
+
+    public PrimeFile getPrimeFile() {
+        return mPrimeFile;
+    }
 
     public void setPrimeFile(PrimeFile file) {
         if (mPrimeFile != file) {
@@ -65,61 +65,15 @@ public class Model {
         return mPrimesInBoolean;
     }
 
-    public double getRadius() {
-        return mRadius;
+    public int getFilter() {
+        return mFilter.get();
     }
 
-    public void setRadius(double radius) throws IllegalArgumentException {
-        if (radius < RADIUS_MINIMUM || radius > RADIUS_MAXIMUM)
-            throw new IllegalArgumentException();
-        mRadius = radius;
+    public void setFilter(int filter) {
+        this.mFilter.set(filter);
     }
 
-    public double getOuterRadius() {
-        if (getTotalCount() == 0)
-            return 0;
-        if (getTotalCount() == 1)
-            return 1;
-
-        long totalCount = getTotalCount() - 1;
-        long layer = 0;
-        long count = 0;
-        for (long i = 1; count < totalCount; i += 6) {
-            count += i;
-            layer++;
-        }
-
-        return layer * mRadius * 2 - mRadius;
-    }
-
-    public double setAutoRadius(double outerRadius) {
-        if (getTotalCount() == 0)
-            return 0;
-        if (getTotalCount() == 1)
-            return outerRadius;
-
-        long totalCount = getTotalCount() - 1;
-        long layer = 0;
-        long count = 0;
-        for (long i = 1; count < totalCount; i += 6) {
-            count += i;
-            layer++;
-        }
-
-        count = layer * 2 - 1;
-        mRadius = outerRadius / count;
-        return mRadius;
-    }
-
-    public boolean isOnlyPrime() {
-        return mOnlyPrime.get();
-    }
-
-    public void setOnlyPrime(boolean onlyPrime) {
-        this.mOnlyPrime.set(onlyPrime);
-    }
-
-    public BooleanProperty onlyPrimeProperty() {
-        return mOnlyPrime;
+    public IntegerProperty filterProperty() {
+        return mFilter;
     }
 }
