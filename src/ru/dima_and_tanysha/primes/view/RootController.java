@@ -74,6 +74,7 @@ public class RootController {
         mCanvas.setModel(mModel);
 
         mFileComboBox.getSelectionModel().select(mModel.getPrimeFile());
+        mSaveImageTextField.setText(mModel.getSaveImagePath());
         mTimeLabel.setVisible(false);
 
         setupListeners();
@@ -124,8 +125,8 @@ public class RootController {
             }
         });
 
-        mSaveImageTextField.setText(mModel.getSaveImagePath());
         mModel.saveImagePathProperty().bind(mSaveImageTextField.textProperty());
+        mSaveButton.disableProperty().bind(mModel.saveImagePathProperty().isEmpty().or(mCanvas.hasImageProperty().not()));
     }
 
     private void disableOrEnableApply() {
@@ -153,6 +154,9 @@ public class RootController {
     @FXML
     private void handleApply() {
         if (mCanApply.get()) {
+            mWidthTextField.setText(String.valueOf(mModel.getImageWidth()));
+            mHeightTextField.setText(String.valueOf(mModel.getImageHeight()));
+
             mTimeLabel.setVisible(false);
             long startTime = System.nanoTime();
 

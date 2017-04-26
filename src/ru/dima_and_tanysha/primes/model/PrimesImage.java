@@ -1,5 +1,7 @@
 package ru.dima_and_tanysha.primes.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class PrimesImage extends Canvas {
+
+    private BooleanProperty mHasImage = new SimpleBooleanProperty(false);
 
     private WritableImage mWritableImage;
     private int           mImageWidth;
@@ -66,8 +70,11 @@ public class PrimesImage extends Canvas {
     private void onDraw() {
         clearCanvas();
 
-        if (mImageData == null)
+        if (mImageData == null) {
+            mHasImage.setValue(false);
             return;
+        }
+        mHasImage.setValue(true);
 
         int max = max(mPrimeCount);
         double norm = 255.0 / max;
@@ -176,4 +183,11 @@ public class PrimesImage extends Canvas {
         }
     }
 
+    public boolean hasImage() {
+        return mHasImage.get();
+    }
+
+    public BooleanProperty hasImageProperty() {
+        return mHasImage;
+    }
 }
