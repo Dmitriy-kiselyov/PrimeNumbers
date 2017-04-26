@@ -14,13 +14,13 @@ import java.nio.ByteBuffer;
 
 public class PrimesImage extends Canvas {
 
-    private static final int IMAGE_WIDTH  = 1000;
-    private static final int IMAGE_HEIGHT = 1000;
-
     private WritableImage mWritableImage;
-    private int[][]       mPrimeCount;
-    private byte[]        mImageData;
-    private double        mRadius;
+    private int           mImageWidth;
+    private int           mImageHeight;
+
+    private int[][] mPrimeCount;
+    private byte[]  mImageData;
+    private double  mRadius;
 
     private Model mModel;
 
@@ -53,8 +53,10 @@ public class PrimesImage extends Canvas {
     }
 
     public void updateAndRedraw() {
-        mWritableImage = new WritableImage(IMAGE_WIDTH, IMAGE_HEIGHT);
-        mImageData = new byte[IMAGE_WIDTH * IMAGE_HEIGHT * 3];
+        mImageWidth = mModel.getImageWidth();
+        mImageHeight = mModel.getImageHeight();
+        mWritableImage = new WritableImage(mImageWidth, mImageHeight);
+        mImageData = new byte[mImageWidth * mImageHeight * 3];
         mRadius = getRadius();
         mPrimeCount = countPrimes(mRadius);
 
@@ -73,8 +75,8 @@ public class PrimesImage extends Canvas {
         //count byte data
         int index = 0;
         int filter = mModel.getFilter();
-        for (int i = 0; i < IMAGE_WIDTH; i++) {
-            for (int j = 0; j < IMAGE_HEIGHT; j++) {
+        for (int i = 0; i < mImageWidth; i++) {
+            for (int j = 0; j < mImageHeight; j++) {
                 int color = (int) (255 - mPrimeCount[i][j] * norm);
 
                 if (color > filter) {
@@ -92,14 +94,14 @@ public class PrimesImage extends Canvas {
         //draw
         GraphicsContext context = this.getGraphicsContext2D();
         PixelFormat<ByteBuffer> pixelFormat = PixelFormat.getByteRgbInstance();
-        mWritableImage.getPixelWriter().setPixels(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT,
-                                                  pixelFormat, mImageData, 0, IMAGE_WIDTH * 3);
+        mWritableImage.getPixelWriter().setPixels(0, 0, mImageWidth, mImageHeight,
+                                                  pixelFormat, mImageData, 0, mImageWidth * 3);
 
         context.drawImage(mWritableImage, 0, 0);
     }
 
     private double getRadius() {
-        double outerRadius = Math.min(IMAGE_WIDTH, IMAGE_HEIGHT) / 2 - 5;
+        double outerRadius = Math.min(mImageWidth, mImageHeight) / 2 - 5;
 
         if (mModel.getTotalCount() == 0)
             return 0;
@@ -127,10 +129,10 @@ public class PrimesImage extends Canvas {
     }
 
     private int[][] countPrimes(double radius) {
-        double centerX = IMAGE_WIDTH / 2;
-        double centerY = IMAGE_HEIGHT / 2;
+        double centerX = mImageWidth / 2;
+        double centerY = mImageHeight / 2;
 
-        int[][] m = new int[IMAGE_WIDTH][IMAGE_HEIGHT];
+        int[][] m = new int[mImageWidth][mImageHeight];
 
         //draw circles
         int[] primes = mModel.getPrimes();

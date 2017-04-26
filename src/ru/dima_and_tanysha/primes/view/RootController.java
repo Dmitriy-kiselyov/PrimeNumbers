@@ -88,6 +88,35 @@ public class RootController {
             mFilterLabel.setText(String.valueOf(newValue.intValue()));
         });
         mFilterSlider.setValue(mModel.getFilter());
+
+        mWidthTextField.setText(String.valueOf(mModel.getImageWidth()));
+        mHeightTextField.setText(String.valueOf(mModel.getImageHeight()));
+        mWidthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                int value = Integer.parseInt(newValue);
+                mModel.setImageWidth(value);
+
+                mHeightTextField.setText(String.valueOf(value));
+
+                mWidthTextField.getStyleClass().remove("error");
+            }
+            catch (Exception e) {
+                if (!mWidthTextField.getStyleClass().contains("error"))
+                    mWidthTextField.getStyleClass().add("error");
+            }
+        });
+        mHeightTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                int value = Integer.parseInt(newValue);
+                mModel.setImageHeight(value);
+
+                mHeightTextField.getStyleClass().remove("error");
+            }
+            catch (Exception e) {
+                if (!mHeightTextField.getStyleClass().contains("error"))
+                    mHeightTextField.getStyleClass().add("error");
+            }
+        });
     }
 
     private void disableOrEnableApply() {
