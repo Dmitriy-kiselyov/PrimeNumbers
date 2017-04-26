@@ -63,6 +63,10 @@ public class MainApp extends Application {
         }
     }
 
+    public Stage getStage() {
+        return mStage;
+    }
+
     public Model getModel() {
         return mModel;
     }

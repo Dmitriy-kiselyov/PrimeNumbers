@@ -7,10 +7,13 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import ru.dima_and_tanysha.primes.MainApp;
 import ru.dima_and_tanysha.primes.model.Model;
 import ru.dima_and_tanysha.primes.model.PrimeFile;
 import ru.dima_and_tanysha.primes.model.PrimesImage;
+
+import java.io.File;
 
 /**
  * Created by Pussy_penetrator on 12.03.2017.
@@ -39,7 +42,10 @@ public class RootController {
     Label mFilterLabel;
 
     @FXML
-    TextField mPathTextField;
+    TextField mSaveImageTextField;
+
+    @FXML
+    Button mChooseSaveImageButton;
 
     @FXML
     Button mSaveButton;
@@ -117,6 +123,9 @@ public class RootController {
                     mHeightTextField.getStyleClass().add("error");
             }
         });
+
+        mSaveImageTextField.setText(mModel.getSaveImagePath());
+        mModel.saveImagePathProperty().bind(mSaveImageTextField.textProperty());
     }
 
     private void disableOrEnableApply() {
@@ -124,6 +133,21 @@ public class RootController {
             mCanApply.setValue(false);
         } else
             mCanApply.setValue(true);
+    }
+
+    @FXML
+    private void handleChooseDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+
+        File file = directoryChooser.showDialog(mMainApp.getStage());
+        if (file != null) {
+            mSaveImageTextField.setText(file.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void handleSaveImage() {
+        mCanvas.saveImage();
     }
 
     @FXML

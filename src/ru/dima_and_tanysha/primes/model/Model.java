@@ -2,6 +2,8 @@ package ru.dima_and_tanysha.primes.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,9 +19,10 @@ public class Model {
     private int[]     mPrimes;
     private boolean[] mPrimesInBoolean;
 
-    private int             mImageWidth  = 1000;
-    private int             mImageHeight = 1000;
-    private IntegerProperty mFilter      = new SimpleIntegerProperty(MAX_FILTER);
+    private int             mImageWidth    = 1000;
+    private int             mImageHeight   = 1000;
+    private IntegerProperty mFilter        = new SimpleIntegerProperty(MAX_FILTER);
+    private StringProperty  mSaveImagePath = new SimpleStringProperty("");
 
     public PrimeFile getPrimeFile() {
         return mPrimeFile;
@@ -105,4 +108,15 @@ public class Model {
         return MIN_SIZE <= size && size <= MAX_SIZE;
     }
 
+    public String getSaveImagePath() {
+        return mSaveImagePath.get();
+    }
+
+    public void setSaveImagePath(String saveImagePath) {
+        this.mSaveImagePath.set(saveImagePath);
+    }
+
+    public StringProperty saveImagePathProperty() {
+        return mSaveImagePath;
+    }
 }

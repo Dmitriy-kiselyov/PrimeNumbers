@@ -160,10 +160,12 @@ public class PrimesImage extends Canvas {
         return m;
     }
 
-    public boolean saveImage(String path) {
-        // Write snapshot to file system as a .png image
-        File outFile = new File(path);
+    public boolean saveImage() {
+        // Write to file system as a .png image
         try {
+            String imageName = "primes_" + mModel.getPrimeFile().getPrimeCount() +
+                               " (" + mImageWidth + "x" + mImageHeight + ").png";
+            File outFile = new File(mModel.getSaveImagePath() + "/" + imageName);
             ImageIO.write(SwingFXUtils.fromFXImage(mWritableImage, null),
                           "png", outFile);
             return true;
