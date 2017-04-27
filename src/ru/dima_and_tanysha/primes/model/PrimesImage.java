@@ -171,7 +171,11 @@ public class PrimesImage extends Canvas {
         // Write to file system as a .png image
         try {
             String imageName = "primes_" + mModel.getPrimeFile().getPrimeCount() +
-                               " (" + mImageWidth + "x" + mImageHeight + ").png";
+                               " (" + mImageWidth + "x" + mImageHeight + ")";
+            if (mModel.getFilter() != mModel.MAX_FILTER)
+                imageName += " filter=" + mModel.getFilter();
+            imageName += ".png";
+
             File outFile = new File(mModel.getSaveImagePath() + "/" + imageName);
             ImageIO.write(SwingFXUtils.fromFXImage(mWritableImage, null),
                           "png", outFile);
