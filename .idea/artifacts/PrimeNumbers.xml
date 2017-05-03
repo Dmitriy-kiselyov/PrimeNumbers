@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="PrimeNumbers">
+    <output-path>$PROJECT_DIR$/out/artifacts/PrimeNumbers</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="alias" value="" />
+        <option name="appClass" value="ru.dima_and_tanysha.primes.MainApp" />
+        <option name="description" value="" />
+        <option name="enabledSigning" value="true" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="keystore" value="" />
+        <option name="title" value="PrimeNumbers" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="PrimeNumbers.jar">
+        <element id="module-output" name="PrimeNumbers" />
+      </element>
+    </root>
+  </artifact>
+</component>
