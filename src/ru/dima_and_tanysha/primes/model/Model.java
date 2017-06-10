@@ -5,19 +5,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 public class Model {
 
     public final int MIN_FILTER = 100;
     public final int MAX_FILTER = 255;
     public final int MIN_SIZE   = 100;
-    public final int MAX_SIZE   = 3000;
+    public final int MAX_SIZE   = 8000;
 
     private PrimeFile mPrimeFile;
-    private int[]     mPrimes;
-    private boolean[] mPrimesInBoolean;
+    private Long      mShowToNumber;
 
     private int             mImageWidth    = 1000;
     private int             mImageHeight   = 1000;
@@ -31,45 +27,21 @@ public class Model {
     public void setPrimeFile(PrimeFile file) {
         if (mPrimeFile != file) {
             mPrimeFile = file;
-            mPrimes = null;
-            mPrimesInBoolean = null;
         }
     }
 
-    public int[] getPrimes() {
-        if (mPrimeFile == null)
-            return null;
-
-        if (mPrimes == null) {
-            try (ObjectInputStream in = new ObjectInputStream(
-                    getClass().getClassLoader().getResourceAsStream(mPrimeFile.getPath()))) {
-                mPrimes = (int[]) in.readObject();
-            }
-            catch (IOException | ClassNotFoundException e) {
-                return null;
-            }
-        }
-        return mPrimes;
+    public long getShowToNumber() {
+        return mShowToNumber == null ? 0 : mShowToNumber;
     }
 
-    public int getTotalCount() {
+    public void setShowToNumber(long showToNumber) {
+        mShowToNumber = showToNumber;
+    }
+
+    public long getMaxCount() {
         if (mPrimeFile == null)
             return 0;
-        return mPrimeFile.getTotalCount();
-    }
-
-    public boolean[] getPrimesInBoolean() {
-        if (mPrimesInBoolean == null) {
-            int[] primes = getPrimes();
-            if (primes == null)
-                return null;
-
-            mPrimesInBoolean = new boolean[getTotalCount() + 1];
-            for (int p : primes)
-                mPrimesInBoolean[p] = true;
-        }
-
-        return mPrimesInBoolean;
+        return mPrimeFile.getMaxCount();
     }
 
     public int getFilter() {

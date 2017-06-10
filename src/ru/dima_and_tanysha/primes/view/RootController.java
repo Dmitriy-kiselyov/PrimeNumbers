@@ -3,17 +3,22 @@ package ru.dima_and_tanysha.primes.view;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import ru.dima_and_tanysha.primes.MainApp;
 import ru.dima_and_tanysha.primes.model.Model;
 import ru.dima_and_tanysha.primes.model.PrimeFile;
 import ru.dima_and_tanysha.primes.model.PrimesImage;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Pussy_penetrator on 12.03.2017.
@@ -27,7 +32,16 @@ public class RootController {
     Pane mCanvasPane;
 
     @FXML
-    ComboBox<PrimeFile> mFileComboBox;
+    TextField mPrimesPathTextField;
+
+    @FXML
+    Button mChoosePrimesPathButton;
+
+    @FXML
+    Label mPrimeCountLabel;
+
+    @FXML
+    TextField mShowToTextField;
 
     @FXML
     TextField mWidthTextField;
@@ -42,7 +56,7 @@ public class RootController {
     Label mFilterLabel;
 
     @FXML
-    TextField mSaveImageTextField;
+    TextField mImagePathTextField;
 
     @FXML
     Button mChooseSaveImageButton;
@@ -70,22 +84,15 @@ public class RootController {
     public void setMainApp(MainApp mainApp) {
         mMainApp = mainApp;
         mModel = mainApp.getModel();
-        mFileComboBox.setItems(mMainApp.getPrimeFiles());
         mCanvas.setModel(mModel);
 
-        mFileComboBox.getSelectionModel().select(mModel.getPrimeFile());
-        mSaveImageTextField.setText(mModel.getSaveImagePath());
+        mImagePathTextField.setText(mModel.getSaveImagePath());
         mTimeLabel.setVisible(false);
 
         setupListeners();
     }
 
     private void setupListeners() {
-        mFileComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            mModel.setPrimeFile(newValue);
-            disableOrEnableApply();
-        });
-
         mApplyButton.disableProperty().bind(mCanApply.not());
 
         mFilterSlider.setMin(mModel.MIN_FILTER);
@@ -125,25 +132,54 @@ public class RootController {
             }
         });
 
-        mModel.saveImagePathProperty().bind(mSaveImageTextField.textProperty());
-        mSaveButton.disableProperty().bind(mModel.saveImagePathProperty().isEmpty().or(mCanvas.hasImageProperty().not()));
+        mPrimesPathTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                PrimeFile primeFile = new PrimeFile(newValue);
+                mModel.setPrimeFile(primeFile);
+                mPrimeCountLabel.setText(String.format("Простые до %d", primeFile.getMaxCount()));
+            }
+            catch (IOException e) {
+                mPrimeCountLabel.setText("Файл не выбран");
+            }
+        });
+
+        mShowToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                long n = Long.parseLong(newValue);
+                mModel.setShowToNumber(n);
+            }
+            catch (NumberFormatException e) {
+                //nothing
+            }
+        });
+
+        mModel.saveImagePathProperty().bind(mImagePathTextField.textProperty());
+        mSaveButton.disableProperty()
+                   .bind(mModel.saveImagePathProperty().isEmpty().or(mCanvas.hasImageProperty().not()));
     }
 
     private void disableOrEnableApply() {
-        if (mFileComboBox.getSelectionModel().getSelectedIndex() < 0) {
-            mCanApply.setValue(false);
-        } else
-            mCanApply.setValue(true);
+        //todo
     }
 
     @FXML
-    private void handleChooseDirectory() {
+    private void handleChooseSaveImageDirectory() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
 
         File file = directoryChooser.showDialog(mMainApp.getStage());
         if (file != null) {
-            mSaveImageTextField.setText(file.getAbsolutePath());
+            mImagePathTextField.setText(file.getAbsolutePath());
         }
+    }
+
+    @FXML
+    private void handleChoosePrimesFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Простые числа (*.data)", "*.data"));
+
+        File file = fileChooser.showOpenDialog(mMainApp.getStage());
+        if (file != null)
+            mPrimesPathTextField.setText(file.getAbsolutePath());
     }
 
     @FXML

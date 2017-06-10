@@ -1,37 +1,36 @@
 package ru.dima_and_tanysha.primes.model;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 public class PrimeFile {
 
     private final String mPath;
-    private final String mFileName;
-    private final int    mPrimeCount;
-    private final int    mTotalCount;
+    private final long   mMaxCount;
 
-    public PrimeFile(String fileName, int primeCount, int totalCount) {
-        mFileName = fileName;
-        mPath = fileName;
-        mPrimeCount = primeCount;
-        mTotalCount = totalCount;
+    public PrimeFile(String path) throws IOException, IllegalArgumentException {
+        mPath = path;
+
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(path));
+
+        try {
+            String name = (String) in.readObject();
+            if (!name.equals("primes"))
+                throw new Exception();
+
+            mMaxCount = in.readLong();
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("Неверный формат файла!");
+        }
     }
 
     public String getPath() {
         return mPath;
     }
 
-    public String getFileName() {
-        return mFileName;
-    }
-
-    public int getPrimeCount() {
-        return mPrimeCount;
-    }
-
-    public int getTotalCount() {
-        return mTotalCount;
-    }
-
-    @Override
-    public String toString() {
-        return mFileName;
+    public long getMaxCount() {
+        return mMaxCount;
     }
 }
