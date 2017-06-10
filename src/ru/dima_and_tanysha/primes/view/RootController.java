@@ -136,7 +136,7 @@ public class RootController {
             try {
                 PrimeFile primeFile = new PrimeFile(newValue);
                 mModel.setPrimeFile(primeFile);
-                mPrimeCountLabel.setText(String.format("Простые до %d", primeFile.getMaxCount()));
+                mPrimeCountLabel.setText(String.format("Простые до %,d", primeFile.getMaxCount()));
             }
             catch (IOException e) {
                 mPrimeCountLabel.setText("Файл не выбран");

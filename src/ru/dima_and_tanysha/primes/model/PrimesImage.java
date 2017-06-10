@@ -79,6 +79,8 @@ public class PrimesImage extends Canvas {
         mHasImage.setValue(true);
 
         int max = max(mPrimeCount);
+        if (max == 0)
+            return;
         double norm = 255.0 / max;
 
         //count byte data
@@ -114,10 +116,8 @@ public class PrimesImage extends Canvas {
 
         if (mModel.getShowToNumber() < 2)
             return 0;
-        if (mModel.getShowToNumber() == 2)
-            return outerRadius;
 
-        long totalCount = mModel.getShowToNumber() - 1;
+        long totalCount = mModel.getShowToNumber() + 1;
         long layer = 0;
         long count = 0;
         for (long i = 1; count < totalCount; i += 6) {
@@ -167,7 +167,6 @@ public class PrimesImage extends Canvas {
                 double x = centerX + Math.cos(angle) * dist;
                 double y = centerY - Math.sin(angle) * dist;
 
-                System.out.println(prime + ": " + (int) x + " " + (int) y);
                 m[(int) x][(int) y]++;
             }
         }
