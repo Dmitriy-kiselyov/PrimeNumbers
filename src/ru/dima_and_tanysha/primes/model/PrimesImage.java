@@ -117,7 +117,7 @@ public class PrimesImage extends Canvas {
         if (mModel.getShowToNumber() == 2)
             return outerRadius;
 
-        long totalCount = getTotalCount() - 1;
+        long totalCount = mModel.getShowToNumber() - 1;
         long layer = 0;
         long count = 0;
         for (long i = 1; count < totalCount; i += 6) {
@@ -127,36 +127,6 @@ public class PrimesImage extends Canvas {
 
         count = layer * 2 - 1;
         return outerRadius / count;
-    }
-
-    private long getTotalCount() {
-        if (mModel.getShowToNumber() < 2)
-            return 0;
-        if (mModel.getShowToNumber() == 2)
-            return 1;
-        if (mModel.getShowToNumber() == 3)
-            return 2;
-
-        long cnt = 2;
-        try (PrimesReader in = new PrimesReader(mModel.getPrimeFile())) {
-            in.next(); // 2
-            in.next(); // 3
-
-            while (true) {
-                long prime = in.next();
-                if (prime > mModel.getShowToNumber())
-                    break;
-                cnt++;
-            }
-        }
-        catch (EOFException e) {
-            return cnt;
-        }
-        catch (Exception e) {
-            return 0;
-        }
-
-        return cnt;
     }
 
     private int max(int[][] m) {
@@ -197,11 +167,15 @@ public class PrimesImage extends Canvas {
                 double x = centerX + Math.cos(angle) * dist;
                 double y = centerY - Math.sin(angle) * dist;
 
+                System.out.println(prime + ": " + (int) x + " " + (int) y);
                 m[(int) x][(int) y]++;
             }
         }
+        catch (EOFException e) {
+            //EOF
+        }
         catch (Exception e) {
-            //ignore
+            e.printStackTrace();
         }
 
         return m;

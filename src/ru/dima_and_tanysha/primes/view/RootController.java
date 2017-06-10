@@ -142,6 +142,7 @@ public class RootController {
                 mPrimeCountLabel.setText("Файл не выбран");
             }
         });
+        mPrimesPathTextField.setText("D:\\Prime numbers\\primes.data");
 
         mShowToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
