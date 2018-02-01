@@ -15,7 +15,8 @@ import javafx.stage.FileChooser;
 import ru.dima_and_tanysha.primes.MainApp;
 import ru.dima_and_tanysha.primes.model.Model;
 import ru.dima_and_tanysha.primes.model.PrimeFile;
-import ru.dima_and_tanysha.primes.model.PrimesImage;
+import ru.dima_and_tanysha.primes.model.CanvasMatrixStrategy;
+import ru.dima_and_tanysha.primes.model.PrimesCanvas;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.io.IOException;
 public class RootController {
 
     @FXML
-    PrimesImage mCanvas;
+    PrimesCanvas mCanvas;
 
     @FXML
     Pane mCanvasPane;
@@ -71,7 +72,7 @@ public class RootController {
     Button mApplyButton;
 
     private MainApp mMainApp;
-    private Model   mModel;
+    private Model mModel;
 
     private BooleanProperty mCanApply = new SimpleBooleanProperty(true);
 
@@ -85,6 +86,7 @@ public class RootController {
         mMainApp = mainApp;
         mModel = mainApp.getModel();
         mCanvas.setModel(mModel);
+        mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
 
         mImagePathTextField.setText(mModel.getSaveImagePath());
         mTimeLabel.setVisible(false);
@@ -142,7 +144,7 @@ public class RootController {
                 mPrimeCountLabel.setText("Файл не выбран");
             }
         });
-        mPrimesPathTextField.setText("D:\\Prime numbers\\primes.data");
+        mPrimesPathTextField.setText("D:\\Prime numbers\\primes_s.data");
 
         mShowToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -156,7 +158,7 @@ public class RootController {
 
         mModel.saveImagePathProperty().bind(mImagePathTextField.textProperty());
         mSaveButton.disableProperty()
-                   .bind(mModel.saveImagePathProperty().isEmpty().or(mCanvas.hasImageProperty().not()));
+                .bind(mModel.saveImagePathProperty().isEmpty().or(mCanvas.hasImageProperty().not()));
     }
 
     private void disableOrEnableApply() {

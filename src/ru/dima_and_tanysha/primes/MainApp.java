@@ -14,7 +14,7 @@ public class MainApp extends Application {
 
     private Stage mStage;
 
-    private Model                     mModel;
+    private Model mModel;
 
     public MainApp() {
         mModel = new Model();

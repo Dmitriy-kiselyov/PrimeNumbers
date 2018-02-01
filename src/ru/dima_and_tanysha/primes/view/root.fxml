@@ -3,7 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import ru.dima_and_tanysha.primes.model.PrimesImage?>
+<?import ru.dima_and_tanysha.primes.model.CanvasMatrixStrategy?>
+<?import ru.dima_and_tanysha.primes.model.PrimesCanvas?>
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0"
           onKeyPressed="#handleKeyPress" styleClass="parent" stylesheets="@css/root_style.css"
           xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
@@ -19,7 +20,7 @@
     <children>
         <Pane fx:id="mCanvasPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <children>
-                <PrimesImage fx:id="mCanvas" height="100.0" width="100.0"/>
+                <PrimesCanvas fx:id="mCanvas" height="100.0" width="100.0"/>
             </children>
         </Pane>
         <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
