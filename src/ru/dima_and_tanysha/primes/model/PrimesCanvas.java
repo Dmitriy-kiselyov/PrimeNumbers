@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import ru.dima_and_tanysha.primes.util.PrimesReader;
 
@@ -78,7 +78,7 @@ public class PrimesCanvas extends Canvas {
         return outerRadius / count;
     }
 
-    private void draw() {
+    protected void draw() {
         if (!mHasImage.get())
             return;
 
@@ -130,7 +130,7 @@ public class PrimesCanvas extends Canvas {
     public boolean saveImage() {
         // Write to file system as a .png image
         try {
-            WritableImage image = mStrategy.prepareImage();
+            Image image = mStrategy.prepareImage();
             String imageName = mStrategy.prepareImageName();
 
             File outFile = new File(mModel.getSaveImagePath() + "/" + imageName);

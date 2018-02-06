@@ -13,10 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import ru.dima_and_tanysha.primes.MainApp;
-import ru.dima_and_tanysha.primes.model.Model;
-import ru.dima_and_tanysha.primes.model.PrimeFile;
-import ru.dima_and_tanysha.primes.model.CanvasMatrixStrategy;
-import ru.dima_and_tanysha.primes.model.PrimesCanvas;
+import ru.dima_and_tanysha.primes.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +83,8 @@ public class RootController {
         mMainApp = mainApp;
         mModel = mainApp.getModel();
         mCanvas.setModel(mModel);
-        mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
+//        mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
+        mCanvas.setStrategy(new CanvasCircleStrategy(mModel));
 
         mImagePathTextField.setText(mModel.getSaveImagePath());
         mTimeLabel.setVisible(false);

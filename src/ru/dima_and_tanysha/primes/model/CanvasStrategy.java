@@ -1,6 +1,6 @@
 package ru.dima_and_tanysha.primes.model;
 
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.Image;
 
 public interface CanvasStrategy {
 
@@ -14,7 +14,7 @@ public interface CanvasStrategy {
 
     void refresh();
 
-    WritableImage prepareImage();
+    Image prepareImage();
 
     String prepareImageName();
 

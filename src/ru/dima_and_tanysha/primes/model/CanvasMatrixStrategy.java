@@ -1,19 +1,10 @@
 package ru.dima_and_tanysha.primes.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
-import ru.dima_and_tanysha.primes.util.PrimesReader;
 
-import javax.imageio.ImageIO;
-import java.io.EOFException;
-import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class CanvasMatrixStrategy implements CanvasStrategy {
@@ -105,7 +96,7 @@ public class CanvasMatrixStrategy implements CanvasStrategy {
     }
 
     @Override
-    public WritableImage prepareImage() {
+    public Image prepareImage() {
         return mWritableImage;
     }
 
