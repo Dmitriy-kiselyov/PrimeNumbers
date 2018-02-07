@@ -41,12 +41,12 @@ public class CanvasMatrixStrategy implements CanvasStrategy {
         mToNumber = mModel.getShowToNumber();
 
         mWritableImage = new WritableImage(mImageWidth, mImageHeight);
-        mPrimeCount = new int[mImageWidth][mImageHeight];
+        mPrimeCount = new int[mImageHeight][mImageWidth];
     }
 
     @Override
     public void onDraw(double x, double y, double radius) {
-        mPrimeCount[(int) x][(int) y]++;
+        mPrimeCount[(int) y][(int) x]++;
     }
 
     @Override
@@ -61,8 +61,8 @@ public class CanvasMatrixStrategy implements CanvasStrategy {
         int filter = mModel.getFilter();
         byte[] imageData = new byte[mImageWidth * mImageHeight * 3];
 
-        for (int i = 0; i < mImageWidth; i++) {
-            for (int j = 0; j < mImageHeight; j++) {
+        for (int i = 0; i < mImageHeight; i++) {
+            for (int j = 0; j < mImageWidth; j++) {
                 int color = (int) (255 - mPrimeCount[i][j] * norm);
 
                 if (color > filter) {
