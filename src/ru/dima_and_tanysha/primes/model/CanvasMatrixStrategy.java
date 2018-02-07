@@ -12,6 +12,7 @@ public class CanvasMatrixStrategy implements CanvasStrategy {
     private WritableImage mWritableImage;
     private int mImageWidth;
     private int mImageHeight;
+    private long mToNumber;
 
     private int[][] mPrimeCount;
 
@@ -37,6 +38,8 @@ public class CanvasMatrixStrategy implements CanvasStrategy {
     public void onDrawStart() {
         mImageWidth = mModel.getImageWidth();
         mImageHeight = mModel.getImageHeight();
+        mToNumber = mModel.getShowToNumber();
+
         mWritableImage = new WritableImage(mImageWidth, mImageHeight);
         mPrimeCount = new int[mImageWidth][mImageHeight];
     }
@@ -102,7 +105,7 @@ public class CanvasMatrixStrategy implements CanvasStrategy {
 
     @Override
     public String prepareImageName() {
-        String imageName = "primes_" + mModel.getShowToNumber() + " (" + mImageWidth + "x" + mImageHeight + ")";
+        String imageName = "primes_" + mToNumber + " (" + mImageWidth + "x" + mImageHeight + ")";
         if (mModel.getFilter() != mModel.MAX_FILTER)
             imageName += " filter=" + mModel.getFilter();
         imageName += ".png";

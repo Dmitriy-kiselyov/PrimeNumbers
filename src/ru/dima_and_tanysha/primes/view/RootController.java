@@ -83,8 +83,8 @@ public class RootController {
         mMainApp = mainApp;
         mModel = mainApp.getModel();
         mCanvas.setModel(mModel);
-//        mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
-        mCanvas.setStrategy(new CanvasCircleStrategy(mModel));
+        mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
+//        mCanvas.setStrategy(new CanvasCircleStrategy(mModel));
 
         mImagePathTextField.setText(mModel.getSaveImagePath());
         mTimeLabel.setVisible(false);
