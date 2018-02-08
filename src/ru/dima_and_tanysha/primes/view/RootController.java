@@ -83,8 +83,7 @@ public class RootController {
         mMainApp = mainApp;
         mModel = mainApp.getModel();
         mCanvas.setModel(mModel);
-        mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
-//        mCanvas.setStrategy(new CanvasCircleStrategy(mModel));
+        mCanvas.setStrategy(new CanvasCircleStrategy(mModel));
 
         mImagePathTextField.setText(mModel.getSaveImagePath());
         mTimeLabel.setVisible(false);
@@ -93,8 +92,20 @@ public class RootController {
     }
 
     private void setupListeners() {
-        mApplyButton.disableProperty().bind(mCanApply.not());
+        setupApply();
+        setupSlider();
+        setupSizes();
+        setupPrimePath();
+        setupShowTo();
+        setupImageSave();
+        setupImageSave();
+    }
 
+    private void setupApply() {
+        mApplyButton.disableProperty().bind(mCanApply.not());
+    }
+
+    private void setupSlider() {
         mFilterSlider.setMin(mModel.MIN_FILTER);
         mFilterSlider.setMax(mModel.MAX_FILTER);
         mFilterSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -102,7 +113,9 @@ public class RootController {
             mFilterLabel.setText(String.valueOf(newValue.intValue()));
         });
         mFilterSlider.setValue(mModel.getFilter());
+    }
 
+    private void setupSizes() {
         mWidthTextField.setText(String.valueOf(mModel.getImageWidth()));
         mHeightTextField.setText(String.valueOf(mModel.getImageHeight()));
         mWidthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -131,7 +144,9 @@ public class RootController {
                     mHeightTextField.getStyleClass().add("error");
             }
         });
+    }
 
+    private void setupPrimePath() {
         mPrimesPathTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 PrimeFile primeFile = new PrimeFile(newValue);
@@ -143,7 +158,9 @@ public class RootController {
             }
         });
         mPrimesPathTextField.setText("D:\\Prime numbers\\primes_s.data");
+    }
 
+    private void setupShowTo() {
         mShowToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 long n = Long.parseLong(newValue);
@@ -153,7 +170,9 @@ public class RootController {
                 //nothing
             }
         });
+    }
 
+    private void setupImageSave() {
         mModel.saveImagePathProperty().bind(mImagePathTextField.textProperty());
         mSaveButton.disableProperty()
                 .bind(mModel.saveImagePathProperty().isEmpty().or(mCanvas.hasImageProperty().not()));
@@ -197,6 +216,7 @@ public class RootController {
             mTimeLabel.setVisible(false);
             long startTime = System.nanoTime();
 
+            applyCanvasStrategy();
             mCanvas.updateAndRedraw();
 
             long time = (System.nanoTime() - startTime) / 1_000_000;
@@ -205,6 +225,14 @@ public class RootController {
             mTimeLabel.setText("Время работы: " + sec + "с " + mil + "мс");
             mTimeLabel.setVisible(true);
         }
+    }
+
+    private void applyCanvasStrategy() {
+        double radius = mCanvas.calculateRadius(mModel.getImageWidth(), mModel.getImageHeight(), mModel.getShowToNumber());
+        if (radius <= 1 && mCanvas.getStrategy().getClass() != CanvasMatrixStrategy.class)
+            mCanvas.setStrategy(new CanvasMatrixStrategy(mModel));
+        if (radius > 1 && mCanvas.getStrategy().getClass() != CanvasCircleStrategy.class)
+            mCanvas.setStrategy(new CanvasCircleStrategy(mModel));
     }
 
     @FXML

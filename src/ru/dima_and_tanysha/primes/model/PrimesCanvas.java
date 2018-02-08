@@ -20,6 +20,7 @@ public class PrimesCanvas extends Canvas {
 
     private int mImageWidth;
     private int mImageHeight;
+    private long mNumberTo;
 
     private Model mModel;
     private CanvasStrategy mStrategy;
@@ -33,6 +34,10 @@ public class PrimesCanvas extends Canvas {
         mStrategy = strategy;
         mStrategy.init(this);
         setupSizeListeners();
+    }
+
+    public CanvasStrategy getStrategy() {
+        return mStrategy;
     }
 
     private void setupSizeListeners() {
@@ -54,22 +59,23 @@ public class PrimesCanvas extends Canvas {
     public void updateAndRedraw() {
         mImageWidth = mModel.getImageWidth();
         mImageHeight = mModel.getImageHeight();
+        mNumberTo = mModel.getShowToNumber();
 
         mHasImage.setValue(true);
 
         draw();
     }
 
-    private double getRadius() {
-        double outerRadius = Math.min(mImageWidth, mImageHeight) / 2 - 5;
+    public double calculateRadius(double width, double height, long total) {
+        double outerRadius = Math.min(width, height) / 2 - 5;
 
-        if (mModel.getShowToNumber() < 2)
+        if (total < 2)
             return 0;
 
-        long totalCount = mModel.getShowToNumber() + 1;
+        total++;
         long layer = 0;
         long count = 0;
-        for (long i = 1; count < totalCount; i += 6) {
+        for (long i = 1; count < total; i += 6) {
             count += i;
             layer++;
         }
@@ -78,7 +84,7 @@ public class PrimesCanvas extends Canvas {
         return outerRadius / count;
     }
 
-    protected void draw() {
+    private void draw() {
         if (!mHasImage.get())
             return;
 
@@ -88,7 +94,7 @@ public class PrimesCanvas extends Canvas {
         //count byte data
         double centerX = mImageWidth / 2;
         double centerY = mImageHeight / 2;
-        double radius = getRadius();
+        double radius = calculateRadius(mImageWidth, mImageHeight, mNumberTo);
 
         try (PrimesReader in = new PrimesReader(mModel.getPrimeFile())) {
             long start = 2;
