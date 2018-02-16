@@ -9,16 +9,16 @@ public class Model {
 
     public final int MIN_FILTER = 100;
     public final int MAX_FILTER = 255;
-    public final int MIN_SIZE   = 100;
-    public final int MAX_SIZE   = 8000;
+    public final int MIN_SIZE = 100;
+    public final int MAX_SIZE = 8000;
 
     private PrimeFile mPrimeFile;
-    private Long      mShowToNumber;
+    private long mShowToNumber;
 
-    private int             mImageWidth    = 1000;
-    private int             mImageHeight   = 1000;
-    private IntegerProperty mFilter        = new SimpleIntegerProperty(MAX_FILTER);
-    private StringProperty  mSaveImagePath = new SimpleStringProperty("");
+    private int mImageWidth = 1000;
+    private int mImageHeight = 1000;
+    private IntegerProperty mFilter = new SimpleIntegerProperty(MAX_FILTER);
+    private StringProperty mSaveImagePath = new SimpleStringProperty("");
 
     public PrimeFile getPrimeFile() {
         return mPrimeFile;
@@ -31,7 +31,7 @@ public class Model {
     }
 
     public long getShowToNumber() {
-        return mShowToNumber == null ? 0 : mShowToNumber;
+        return mShowToNumber;
     }
 
     public void setShowToNumber(long showToNumber) {

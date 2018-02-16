@@ -9,6 +9,7 @@ import ru.dima_and_tanysha.primes.model.Model;
 import ru.dima_and_tanysha.primes.view.RootController;
 
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 public class MainApp extends Application {
 
@@ -18,6 +19,7 @@ public class MainApp extends Application {
 
     public MainApp() {
         mModel = new Model();
+        loadModel();
     }
 
     public static void main(String[] args) {
@@ -54,5 +56,27 @@ public class MainApp extends Application {
 
     public Model getModel() {
         return mModel;
+    }
+
+    private void loadModel() {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+
+        long showToNumber = prefs.getLong("showToNumber", 0);
+        if (showToNumber != 0)
+            mModel.setShowToNumber(showToNumber);
+        mModel.setImageWidth(prefs.getInt("imageWidth", 1000));
+        mModel.setImageHeight(prefs.getInt("imageHeight", 1000));
+        mModel.setFilter(prefs.getInt("filter", 255));
+        mModel.setSaveImagePath(prefs.get("imagePath", ""));
+    }
+
+    public void saveModel() {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+
+        prefs.putLong("showToNumber", mModel.getShowToNumber());
+        prefs.putInt("imageWidth", mModel.getImageWidth());
+        prefs.putInt("imageHeight", mModel.getImageHeight());
+        prefs.putInt("filter", mModel.getFilter());
+        prefs.put("imagePath", mModel.getSaveImagePath());
     }
 }

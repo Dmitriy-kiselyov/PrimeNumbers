@@ -161,6 +161,9 @@ public class RootController {
     }
 
     private void setupShowTo() {
+        if (mModel.getShowToNumber() != 0)
+            mShowToTextField.setText("" + mModel.getShowToNumber());
+
         mShowToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 long n = Long.parseLong(newValue);
@@ -216,6 +219,7 @@ public class RootController {
             mTimeLabel.setVisible(false);
             long startTime = System.nanoTime();
 
+            mMainApp.saveModel();
             applyCanvasStrategy();
             mCanvas.updateAndRedraw();
 
